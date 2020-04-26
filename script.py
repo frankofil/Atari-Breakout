@@ -1,4 +1,5 @@
 import sys
+from random import randint
 import pygame
 from paddle import Paddle
 from ball import Ball
@@ -107,11 +108,11 @@ def main():
                 screen.fill(bgColor)
                 font = pygame.font.Font(None, 74)
                 text = font.render("GAME OVER", 1, BLACK)
-                screen.blit(text, (120, 165))
+                screen.blit(text, (130, 130))
 
                 font = pygame.font.Font(None, 60)
                 text = font.render("Score: " + str(score), 1, BLACK)
-                screen.blit(text, (215, 250))
+                screen.blit(text, (180, 210))
                 pygame.display.flip()
                 counterEnd = 0
                 while counterEnd <= 150:
@@ -127,13 +128,15 @@ def main():
             main()
 
         #Collision with Paddle
-        if paddle.rect.collidepoint(ball.rect.x-2*BallData.radius, ball.rect.y-2*BallData.radius):
-            ball.movement[1] *= -1
+        if paddle.rect.colliderect(ball.rect):
+            if ball.movement[1] < 0:
+                ball.movement[1] *= -1
 
         #Collision with bricks
         brick_collison_list = pygame.sprite.spritecollide(ball, all_brick, False)
         for brick in brick_collison_list:
-            ball.movement[1] *= -1
+            if ball.movement[1] > 0:
+                ball.movement[1] *= -1
             if brick.color == (40, 40, 40):
                 score += 100
                 ball.speed += 1

@@ -29,6 +29,6 @@ class BrickData:
 #Ball data
 class BallData:
     radius = 8
-    center = [int((width-radius)/2), int(2*height/3)]
+    center = [int((width-radius)/2), int(2*height/4)]
     color = white
     speed = PaddleData.speed - 2
