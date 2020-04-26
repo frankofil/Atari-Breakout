@@ -4,11 +4,8 @@ from settings import scr_size
 
 pygame.init()
 clock = pygame.time.Clock()
-black = (0, 0, 0)
-red = (255, 0, 0)
+BLACK = (0, 0, 0)
 FPS = 50
-width = scr_size[0]
-height = scr_size[1]
 
 def countdown(screen, i):
     count = FPS
@@ -19,7 +16,7 @@ def countdown(screen, i):
                 sys.exit() #quitting our program
 
         number = pygame.font.Font('freesansbold.ttf', 100)
-        text = number.render(str(i), True, black)
+        text = number.render(str(i), True, BLACK)
         textRect = text.get_rect()
         textRect.center = (scr_size[0]/2, scr_size[1]/2)
         screen.blit(text, textRect)

@@ -5,7 +5,7 @@ __color__ = [red, green, blue, yellow, black, white, gray] = [(255, 0, 0), (97, 
 scr_size = (width, height) = (600, 400)
 FPS = 50
 bgColor = gray
-colorChange = 5
+colorChange = 3 #in sec
 
 #Paddle data
 class PaddleData:
