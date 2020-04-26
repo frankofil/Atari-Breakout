@@ -4,16 +4,12 @@ from paddle import Paddle
 from ball import Ball
 from brick import Brick
 import features
-from settings import (scr_size, FPS, bgColor, PaddleData, BallData, BrickData)
+from settings import (scr_size, FPS, bgColor, PaddleData, BallData, BrickData, colorChange)
 
 #Useful colors
 RED = (255, 0, 0)
-GREEN = (97, 204, 61)
-BLUE = (71, 159, 214)
 WHITE = (227, 209, 209)
 BLACK = (0, 0, 0)
-GRAY = (60, 60, 60)
-YELLOW = (255, 255, 0)
 
 heart = 3
 points = [0]
@@ -81,24 +77,23 @@ def game(live):
     while not gameOver:
         #Changing colors every 5 seconds
         counter += 1
-        #if counter == FPS*colorChange:
-         #   counter = 0
-          #  nBricks = len(bricks)
-           # for i in range(nBricks):
-            #    bricks[i].pick_random_color()
+        if counter == FPS*colorChange:
+            counter = 0
+            for block in all_brick:
+                block.pick_random_color()
 
         #Handling user input
         for event in pygame.event.get(): #getting all events like keypress, mouseclick, etc
             if event.type == pygame.QUIT:
                 gameOver = True
-
+        #Moving a paddle
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             paddle.moveLeft()
         if keys[pygame.K_RIGHT]:
             paddle.moveRight()
 
-
+        #Checking walls
         ball.walls()
         if ball.bottom_line():
             lives -= 1
@@ -133,12 +128,13 @@ def game(live):
         #Collision with bricks
         brick_collison_list = pygame.sprite.spritecollide(ball, all_brick, False)
         for brick in brick_collison_list:
+            #Changing direction of the ball
             if ball.rect.x + 5 < brick.rect.x + BrickData.sizeX and ball.rect.x + 2*BallData.radius - 5 > brick.rect.x:
                 if ball.movement[1] > 0:
                     ball.movement[1] *= -1
             else:
                 ball.movement[0] *= -1
-
+            #Counting points
             if brick.color == (40, 40, 40):
                 points[0] += 100
                 ball.speed += 1
@@ -146,6 +142,7 @@ def game(live):
             else:
                 points[0] += 20
             brick.kill()
+            #When the level is cleared
             if len(all_brick) == 0:
                 points[0] += 500
 
@@ -158,7 +155,7 @@ def game(live):
                 text = font.render("Score: " + str(points[0]), 1, BLACK)
                 screen.blit(text, (215, 250))
 
-                while counterEnd <= 150:
+                while counterEnd <= FPS*3:
                     counterEnd += 1
                     for event in pygame.event.get(): #getting all events like keypress, mouseclick, etc
                         if event.type == pygame.QUIT:
@@ -168,10 +165,12 @@ def game(live):
 
                 game(lives)
 
+        #Updating to screen all changes
         all_sprites_list.update()
         #Drawing code
         screen.fill(bgColor)
         hearts(screen, lives)
+
         #Score
         font = pygame.font.Font(None, 40)
         text = font.render(str(points[0]), 1, WHITE)

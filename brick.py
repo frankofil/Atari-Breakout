@@ -25,3 +25,4 @@ class Brick(pygame.sprite.Sprite):
 
     def pick_random_color(self):
         self.color = __color__[random.randint(0, nColors-1)]
+        self.image.fill(self.color)
