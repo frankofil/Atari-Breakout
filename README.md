@@ -1,7 +1,7 @@
 # Atari Breakout
 ## Idea
 This is a clone with some personal features of old Breakout game written in Python with PyGame module.
-
+![Gameplay](gameplay.png)
 ## How to run?
 Firstly clone repository to your computer
 ```bash
